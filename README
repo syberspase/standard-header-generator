@@ -1,0 +1,2 @@
+Require JDK 1.8
+Import maven project to Eclipse then right click project to run as JUnit test.
