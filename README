@@ -1,2 +1,15 @@
 Require JDK 1.8
 Import maven project to Eclipse then right click project to run as JUnit test.
+
+You can define your own header format by language in a .properties file:
+e.g. Java:
+header.start=/**
+line.starts= *\ 
+header.end= */
+
+Then load it to StandardHeaderGenerator, sample as below:
+    URL src = Paths.get("./Foo.java").toUri().toURL();
+    URL copyright = Paths.get("./Copyright.txt").toUri().toURL();
+    URL javaProps = Paths.get("src/main/resources/java.header.properties").toUri().toURL();
+    StandardHeaderGenerator generator = new StandardHeaderGenerator(javaProps);
+    generator.addHeader(copyright, src);

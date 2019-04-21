@@ -19,8 +19,8 @@ import java.util.stream.Stream;
  * it should be reusable for them to add other enhancements to without needing
  * oversight or involvement from you.
  * 
- * License is from
- * https://raw.githubusercontent.com/mozilla/copyright/master/LICENSE
+ * Copyright is copied from
+ * https://raw.githubusercontent.com/InsightSoftwareConsortium/ITK/master/Modules/ThirdParty/KWSys/src/KWSys/Copyright.txt
  * 
  * @author Shep Liu(syberspase@gmail.com)
  *
@@ -30,6 +30,11 @@ public class StandardHeaderGenerator {
     private String lineStarts;
     private String headerEnd;
 
+    /**
+     * Constructor with language header properties file URL.
+     * @param langHeaderPropsFileUrl
+     * @throws StandardHeaderGeneratorException
+     */
     public StandardHeaderGenerator(URL langHeaderPropsFileUrl) throws StandardHeaderGeneratorException {
         try {
             loadProps(new String(Files.readAllBytes(Paths.get(langHeaderPropsFileUrl.toURI()))));
@@ -38,10 +43,21 @@ public class StandardHeaderGenerator {
         }
     }
 
+    /**
+     * Constructor with string from language header properties file.
+     * @param langHeaderPropsString
+     * @throws StandardHeaderGeneratorException
+     */
     public StandardHeaderGenerator(String langHeaderPropsString) throws StandardHeaderGeneratorException {
         loadProps(langHeaderPropsString);
     }
 
+    /**
+     * Adds header to source file.
+     * @param headerUrl
+     * @param srcUrl
+     * @throws StandardHeaderGeneratorException
+     */
     public void addHeader(URL headerUrl, URL srcUrl) throws StandardHeaderGeneratorException {
         try (Stream<String> src = Files.lines(Paths.get(srcUrl.toURI()));
              Stream<String> header = Files.lines(Paths.get(headerUrl.toURI()))) {
@@ -62,6 +78,11 @@ public class StandardHeaderGenerator {
         }
     }
 
+    /**
+     * Loads properties file and set values to object fields.
+     * @param langHeaderPropsString
+     * @throws StandardHeaderGeneratorException
+     */
     private void loadProps(String langHeaderPropsString) throws StandardHeaderGeneratorException {
         try {
             Properties props = new Properties();
@@ -75,13 +96,18 @@ public class StandardHeaderGenerator {
 
     }
 
+    /**
+     * For local test.
+     * @param args
+     * @throws StandardHeaderGeneratorException
+     */
     public static void main(String[] args) throws StandardHeaderGeneratorException {
         try {
             URL src = Paths.get("./Foo.java").toUri().toURL();
             URL copyright = Paths.get("./Copyright.txt").toUri().toURL();
             URL javaProps = Paths.get("src/main/resources/java.header.properties").toUri().toURL();
-            StandardHeaderGenerator app = new StandardHeaderGenerator(javaProps);
-            app.addHeader(copyright, src);
+            StandardHeaderGenerator generator = new StandardHeaderGenerator(javaProps);
+            generator.addHeader(copyright, src);
         } catch (IOException e) {
             throw new StandardHeaderGeneratorException(e);
         }
